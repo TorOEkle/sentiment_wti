@@ -24,6 +24,7 @@ This project uses [uv](https://github.com/astral-sh/uv) for environment and depe
       transformers \
       torch
     ```
+Yes I use both uv and pip, because uv does not support installing spaCy models directly.
 
 3. **Download the spaCy English model:**
     ```bash
