@@ -2,9 +2,10 @@ from textblob import TextBlob
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from torch.nn.functional import softmax
 import torch
+import pandas as pd
 
 # Load tokenizer and model once
-MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment"
+MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment" ##ProsusAI/finbert
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 LABELS = ["Negative", "Neutral", "Positive"]
@@ -31,6 +32,13 @@ def get_sentiment(text: str) -> str:
     label_index = torch.argmax(scores).item()
     return LABELS[label_index]
 
+# With some manual spot checks I found use of polarity as less precise than the model.
+def get_sentiment_polarity(text: str) -> float:
+    return TextBlob(text).sentiment.polarity
+
+def get_sentiment_subjectivity(text: str) -> float:
+    return TextBlob(text).sentiment.subjectivity
+
 def detect_themes(text: str) -> list[str]:
     themes = []
     lowered = text.lower()
@@ -47,3 +55,12 @@ def detect_segment(text: str) -> str:
         return "Services"
     else:
         return "Unknown"
+    
+def correlation_with_se(x, y):
+    df = pd.DataFrame({'x': x, 'y': y}).dropna()
+    r = df['x'].corr(df['y'])
+    n = len(df)
+    if n < 3:
+        return r, None  # too few data points
+    se = (1 - r**2) / (n - 2) ** 0.5
+    return r, se

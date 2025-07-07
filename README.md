@@ -1,6 +1,10 @@
 # Sentiment in energy survey from Dallas Fed
-I was curious if the sentiments from comments in the Dallas Fed Energy Survey could be correlated with WTI oil prices. The atteched scripts scrape the survey comments from 2017 to 2025, classify the sentiment, create a plot and print correaltion.
-**PS:** The sentiment analysis in this project is not very elegant, but it serves as a basic example of how to analyze sentiment in relation to WTI oil prices. 
+I was curious if the sentiments from comments in the Dallas Fed Energy Survey could be correlated with WTI oil prices. The atteched scripts scrape the survey comments from 2017 to 2025, classify the sentiment, create a plot and print correlation. It might not be suprise, but the SentimentScore has a higher absolute value in correlation for previous period of WTI prices. More suprisingly for me was it had a negative sign.  $corr(SentimentScore, wti_{t-1}) = -0.328  ± 0.160$ than $corr(SentimentScore, wti_{t+1}) = -0.152 ± 0.175$ One reason might be that the industry expect worse times ahead when prices are high and vice versa.
+
+**PS:** The sentiment analysis in this project is not very elegant, but it serves as a basic example of how to analyze sentiment in relation to WTI oil prices. I have used the model `cardiffnlp/twitter-roberta-base-sentiment` from Hugging Face for sentiment classification. Tested also with `ProsusAI/finbert`, but it did not perform as well in terms of correlation with WTI prices.
+
+
+
 
 Oil price is taken from [FRED](https://fred.stlouisfed.org/series/DCOILWTICO).
 
